@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+<head>
+   <title>Island Hopping in golden triangle</title>
+   <meta charset="utf-8" />
+   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"/>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css"/>
+  
+</head>
+<body>
+   <div id="map" style="width: 600px; height: 400px;">
+   </div>
+   
+   <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js" ></script> 
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.js" > </script>
+
+   <script>
+      //Creating map and setting zoom
+      var map = L.map('map').setView([-8.564269, 119.462020], 10);
+      
+      // Set up the OSM layer
+      mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+      L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; ' + mapLink + ' Contributors',
+      maxZoom: 18,
+      }).addTo(map);
+      
+      // Initialise the FeatureGroup to store editable layers
+      var drawnItems = new L.FeatureGroup();
+      map.addLayer(drawnItems);
+      
+      // Initialise the draw control and pass it the FeatureGroup of editable layers
+      var drawControl = new L.Control.Draw({
+      edit: {
+      featureGroup: drawnItems
+      }
+      });
+      map.addControl(drawControl);
+      map.on('draw:created', function (e) {
+      var type = e.layerType,
+      layer = e.layer;
+      if (type === 'marker') {
+      layer.bindPopup('A popup!');
+      }
+      drawnItems.addLayer(layer);
+      });
+      
+      </script>
+
+</body>
+</html>
